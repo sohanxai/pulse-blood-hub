@@ -154,7 +154,7 @@ function Home() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="relative order-2 lg:order-1">
             <div className="absolute -inset-4 bg-gradient-medical opacity-15 blur-3xl rounded-full" />
-            <img src={benefitsImg} alt="Doctor holding red heart symbolising blood donation" loading="lazy" width={1024} height={768} className="relative rounded-3xl shadow-elegant aspect-[4/3] object-cover" />
+            <img src={photoDoctor} alt="Doctor holding red heart symbolising blood donation" loading="lazy" width={1024} height={768} className="relative rounded-3xl shadow-elegant aspect-[4/3] object-cover" />
             <Card className="absolute -bottom-6 -right-6 glass border-white/20 p-4 shadow-elegant rounded-2xl hidden md:block">
               <div className="flex items-center gap-3">
                 <span className="h-12 w-12 grid place-items-center rounded-xl bg-primary/15 text-primary">
@@ -234,7 +234,7 @@ function Home() {
           {/* Featured camp with image */}
           <Card className="lg:row-span-2 overflow-hidden rounded-3xl border-0 shadow-elegant group">
             <div className="relative h-64 lg:h-80 overflow-hidden">
-              <img src={campImg} alt="Outdoor blood donation camp" loading="lazy" width={1024} height={768} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <img src={photoCamp} alt="Outdoor blood donation camp" loading="lazy" width={1024} height={768} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">Featured</Badge>
               <div className="absolute bottom-4 left-4 right-4 text-white">
