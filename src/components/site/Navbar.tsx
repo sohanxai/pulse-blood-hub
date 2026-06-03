@@ -8,7 +8,6 @@ const links = [
   { to: "/", label: "Home" },
   { to: "/find-blood", label: "Find Blood" },
   { to: "/donate", label: "Become a Donor" },
-  { to: "/emergency", label: "Emergency" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ];
