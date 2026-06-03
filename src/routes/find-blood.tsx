@@ -9,8 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { BackButton } from "@/components/site/BackButton";
 import { BloodGroupBadge } from "@/components/site/BloodGroupBadge";
-import { BLOOD_GROUPS, CITIES, generateDemoDonors, type BloodGroup } from "@/lib/blood-data";
+import { BLOOD_GROUPS, generateDemoDonors, type BloodGroup } from "@/lib/blood-data";
 import { searchDonors, listBloodBanks } from "@/lib/bloodconnect.functions";
+import { CityCombobox } from "@/components/site/CityCombobox";
 
 export const Route = createFileRoute("/find-blood")({
   head: () => ({ meta: [{ title: "Find Blood — BloodConnect" }, { name: "description", content: "Search verified donors and blood banks near you." }] }),
