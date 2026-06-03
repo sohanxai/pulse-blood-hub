@@ -56,10 +56,9 @@ function FindBlood() {
           </div>
           <div>
             <Label>City</Label>
-            <Select value={city} onValueChange={setCity}>
-              <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
-              <SelectContent>{CITIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
-            </Select>
+            <div className="mt-1">
+              <CityCombobox value={city} onChange={setCity} />
+            </div>
           </div>
           <Button size="lg" onClick={() => search.mutate()} disabled={search.isPending} className="bg-gradient-primary shadow-glow h-11">
             <Search className="mr-2 h-4 w-4" /> {search.isPending ? "Searching..." : "Search"}
