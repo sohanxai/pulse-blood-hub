@@ -9,8 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { BackButton } from "@/components/site/BackButton";
 import { BloodGroupBadge } from "@/components/site/BloodGroupBadge";
-import { BLOOD_GROUPS, CITIES, generateDemoDonors, type BloodGroup } from "@/lib/blood-data";
+import { BLOOD_GROUPS, generateDemoDonors, type BloodGroup } from "@/lib/blood-data";
 import { searchDonors, listBloodBanks } from "@/lib/bloodconnect.functions";
+import { CityCombobox } from "@/components/site/CityCombobox";
 
 export const Route = createFileRoute("/find-blood")({
   head: () => ({ meta: [{ title: "Find Blood — BloodConnect" }, { name: "description", content: "Search verified donors and blood banks near you." }] }),
@@ -55,10 +56,9 @@ function FindBlood() {
           </div>
           <div>
             <Label>City</Label>
-            <Select value={city} onValueChange={setCity}>
-              <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
-              <SelectContent>{CITIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
-            </Select>
+            <div className="mt-1">
+              <CityCombobox value={city} onChange={setCity} />
+            </div>
           </div>
           <Button size="lg" onClick={() => search.mutate()} disabled={search.isPending} className="bg-gradient-primary shadow-glow h-11">
             <Search className="mr-2 h-4 w-4" /> {search.isPending ? "Searching..." : "Search"}
