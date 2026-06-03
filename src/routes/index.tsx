@@ -13,9 +13,10 @@ import { BLOOD_GROUPS, COMPATIBILITY, type BloodGroup } from "@/lib/blood-data";
 import { useState } from "react";
 import { BloodGroupBadge } from "@/components/site/BloodGroupBadge";
 import { AnimatedCounter } from "@/components/site/AnimatedCounter";
-import heroBg from "@/assets/hero-bg.jpg";
-import campImg from "@/assets/camp.jpg";
-import benefitsImg from "@/assets/benefits.jpg";
+import photoDonor from "@/assets/photo-donor.jpg";
+import photoCamp from "@/assets/photo-camp.jpg";
+import photoBank from "@/assets/photo-bank.jpg";
+import photoDoctor from "@/assets/photo-doctor.jpg";
 
 const statsQO = queryOptions({ queryKey: ["stats"], queryFn: () => getStats() });
 
