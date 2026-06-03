@@ -8,6 +8,7 @@ import { getStats } from "@/lib/bloodconnect.functions";
 import { BLOOD_GROUPS, COMPATIBILITY, type BloodGroup } from "@/lib/blood-data";
 import { useState } from "react";
 import { BloodGroupBadge } from "@/components/site/BloodGroupBadge";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const statsQO = queryOptions({ queryKey: ["stats"], queryFn: () => getStats() });
 
