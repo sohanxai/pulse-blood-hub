@@ -8,6 +8,7 @@ import { getStats } from "@/lib/bloodconnect.functions";
 import { BLOOD_GROUPS, COMPATIBILITY, type BloodGroup } from "@/lib/blood-data";
 import { useState } from "react";
 import { BloodGroupBadge } from "@/components/site/BloodGroupBadge";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const statsQO = queryOptions({ queryKey: ["stats"], queryFn: () => getStats() });
 
@@ -26,7 +27,9 @@ function Home() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-soft">
-        <div className="absolute inset-0 -z-10 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 20% 20%, oklch(0.68 0.23 25 / 0.25), transparent 50%), radial-gradient(circle at 80% 60%, oklch(0.55 0.18 252 / 0.2), transparent 50%)" }} />
+        <img src={heroBg} alt="" aria-hidden width={1920} height={1080} className="absolute inset-0 -z-20 h-full w-full object-cover opacity-25" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-background/85 via-background/70 to-background/90" />
+        <div className="absolute inset-0 -z-10 opacity-40" style={{ backgroundImage: "radial-gradient(circle at 20% 20%, oklch(0.68 0.23 25 / 0.3), transparent 50%), radial-gradient(circle at 80% 60%, oklch(0.55 0.18 252 / 0.25), transparent 50%)" }} />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-24 md:pt-24 md:pb-32 grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-card mb-6">
