@@ -52,27 +52,24 @@ function Home() {
   return (
     <div className="overflow-hidden">
       {/* ===================== HERO ===================== */}
-      <section className="relative min-h-[92vh] flex items-center">
-        <img src={heroBg} alt="" aria-hidden width={1920} height={1152} className="absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-background/95 via-background/80 to-background/60" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/40 to-transparent" />
-        <div className="absolute -z-10 top-20 -left-20 h-96 w-96 rounded-full bg-primary/20 blur-3xl" />
-        <div className="absolute -z-10 bottom-20 right-0 h-96 w-96 rounded-full bg-secondary/20 blur-3xl" />
+      <section className="relative">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
+        <div className="absolute -z-10 top-10 -left-32 h-96 w-96 rounded-full bg-primary/15 blur-3xl" />
+        <div className="absolute -z-10 bottom-0 right-0 h-96 w-96 rounded-full bg-secondary/15 blur-3xl" />
 
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-12 items-center w-full">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-16 lg:pt-14 lg:pb-20 grid lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-14 items-center">
           <div className="animate-fade-in">
-            <div className="inline-flex items-center gap-2 rounded-full border bg-card/70 backdrop-blur px-4 py-1.5 text-xs font-medium shadow-card mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border bg-card/70 backdrop-blur px-4 py-1.5 text-xs font-medium shadow-card mb-5">
               <Sparkles className="h-3.5 w-3.5 text-primary" />
-              AI-powered donor matching • Trusted by {stats.hospitals}+ hospitals
+              AI-powered donor matching · {stats.hospitals}+ partner hospitals
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
-              Every drop <br className="hidden sm:block" />
-              <span className="text-gradient-primary">saves a life.</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
+              Every drop <span className="text-gradient-primary">saves a life.</span>
             </h1>
-            <p className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed">
-              Connect with verified donors, find blood banks instantly, and join donation camps near you. Real-time availability, zero friction.
+            <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
+              Connect with verified donors, find blood banks instantly, and join donation camps near you — across India.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <Link to="/find-blood">
                 <Button size="lg" className="bg-gradient-primary shadow-glow text-base h-12 px-6 hover:scale-105 transition-transform">
                   <Search className="mr-2 h-5 w-5" /> Find Blood Now
@@ -84,54 +81,50 @@ function Home() {
                 </Button>
               </Link>
             </div>
-            <div className="mt-10 grid grid-cols-3 gap-4 max-w-md">
+            <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
               {[
                 { icon: Shield, label: "Verified donors", c: "text-success" },
                 { icon: Clock, label: "24/7 support", c: "text-secondary" },
-                { icon: Activity, label: "Real-time", c: "text-primary" },
+                { icon: Activity, label: "Real-time availability", c: "text-primary" },
               ].map((b) => (
-                <div key={b.label} className="flex flex-col items-start gap-1.5">
-                  <b.icon className={`h-5 w-5 ${b.c}`} />
-                  <span className="text-xs font-medium text-muted-foreground">{b.label}</span>
-                </div>
+                <span key={b.label} className="inline-flex items-center gap-1.5 text-muted-foreground">
+                  <b.icon className={`h-4 w-4 ${b.c}`} />
+                  {b.label}
+                </span>
               ))}
             </div>
           </div>
 
-          <div className="relative lg:justify-self-end w-full max-w-md animate-float">
-            <div className="absolute -inset-6 bg-gradient-primary opacity-20 blur-3xl rounded-full" />
-            <Card className="relative glass border-white/20 p-6 shadow-elegant rounded-3xl">
-              <div className="flex items-center justify-between mb-5">
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Live Network</p>
-                  <p className="font-display font-bold text-xl mt-0.5">India-wide coverage</p>
-                </div>
-                <span className="h-10 w-10 grid place-items-center rounded-full bg-success/15">
-                  <HeartPulse className="h-5 w-5 text-success animate-pulse" />
-                </span>
-              </div>
-              <div className="grid grid-cols-4 gap-2">
-                {BLOOD_GROUPS.map((g) => (
-                  <div key={g} className="aspect-square grid place-items-center rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/10 font-display font-bold text-primary hover:scale-105 transition-transform cursor-default">
-                    {g}
-                  </div>
-                ))}
-              </div>
-              <div className="mt-5 pt-5 border-t grid grid-cols-3 gap-3 text-center">
-                <div>
-                  <p className="font-display font-bold text-2xl text-primary"><AnimatedCounter value={stats.donors} /></p>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">Donors</p>
-                </div>
-                <div>
-                  <p className="font-display font-bold text-2xl text-secondary"><AnimatedCounter value={stats.banks} /></p>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">Banks</p>
-                </div>
-                <div>
-                  <p className="font-display font-bold text-2xl text-success"><AnimatedCounter value={stats.livesSaved} /></p>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">Lives</p>
+          {/* Compact photo collage */}
+          <div className="relative">
+            <div className="grid grid-cols-5 grid-rows-6 gap-3 h-[360px] md:h-[420px]">
+              <div className="col-span-3 row-span-4 rounded-2xl overflow-hidden shadow-elegant relative group">
+                <img src={photoDonor} alt="Smiling young donor donating blood" width={768} height={768} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                <div className="absolute bottom-3 left-3 text-white text-xs font-medium inline-flex items-center gap-1.5">
+                  <HeartPulse className="h-3.5 w-3.5 text-primary animate-pulse" /> Live donation
                 </div>
               </div>
-            </Card>
+              <div className="col-span-2 row-span-3 rounded-2xl overflow-hidden shadow-card">
+                <img src={photoCamp} alt="Blood donation camp" loading="lazy" width={768} height={768} className="h-full w-full object-cover" />
+              </div>
+              <div className="col-span-2 row-span-3 rounded-2xl overflow-hidden shadow-card">
+                <img src={photoBank} alt="Blood bank technician" loading="lazy" width={768} height={768} className="h-full w-full object-cover" />
+              </div>
+              <div className="col-span-3 row-span-2 rounded-2xl bg-card border shadow-card p-4 flex items-center gap-4">
+                <div className="h-12 w-12 grid place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
+                  <Droplet className="h-6 w-6" fill="currentColor" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-display font-bold text-xl leading-tight">
+                    <AnimatedCounter value={stats.donors} />+ <span className="text-muted-foreground font-normal text-sm">donors online</span>
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                    {stats.banks} banks · {stats.livesSaved}+ lives saved
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
