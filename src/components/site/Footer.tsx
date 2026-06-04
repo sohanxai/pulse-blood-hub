@@ -21,7 +21,7 @@ export function Footer() {
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li><Link to="/find-blood" className="hover:text-foreground">Find Blood</Link></li>
             <li><Link to="/donate" className="hover:text-foreground">Become a Donor</Link></li>
-            <li><Link to="/emergency" className="hover:text-foreground">Emergency Request</Link></li>
+            <li><Link to="/camps" className="hover:text-foreground">Donation Camps</Link></li>
             <li><Link to="/dashboard" className="hover:text-foreground">Dashboard</Link></li>
           </ul>
         </div>

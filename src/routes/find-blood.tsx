@@ -1,25 +1,28 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Search, MapPin, Phone, Shield, Droplet, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { BackButton } from "@/components/site/BackButton";
 import { BloodGroupBadge } from "@/components/site/BloodGroupBadge";
-import { BLOOD_GROUPS, CITIES, generateDemoDonors, type BloodGroup } from "@/lib/blood-data";
+import { SearchableSelect } from "@/components/site/SearchableSelect";
+import { BLOOD_GROUPS, STATES, STATE_CITIES, generateDemoDonors, type BloodGroup } from "@/lib/blood-data";
 import { searchDonors, listBloodBanks } from "@/lib/bloodconnect.functions";
 
 export const Route = createFileRoute("/find-blood")({
-  head: () => ({ meta: [{ title: "Find Blood — BloodConnect" }, { name: "description", content: "Search verified donors and blood banks near you." }] }),
+  head: () => ({ meta: [{ title: "Find Blood — BloodConnect" }, { name: "description", content: "Search verified donors and blood banks across India." }] }),
   component: FindBlood,
 });
 
 function FindBlood() {
   const [group, setGroup] = useState<BloodGroup>("O+");
+  const [state, setState] = useState<string>("Maharashtra");
   const [city, setCity] = useState<string>("Mumbai");
+
+  const cityOptions = useMemo(() => STATE_CITIES[state] ?? [], [state]);
 
   const search = useMutation({
     mutationFn: async () => {
@@ -41,26 +44,30 @@ function FindBlood() {
       <BackButton />
       <div className="max-w-2xl">
         <h1 className="text-3xl md:text-4xl font-bold">Find Blood</h1>
-        <p className="mt-2 text-muted-foreground">Search verified donors and nearby blood banks in seconds.</p>
+        <p className="mt-2 text-muted-foreground">Search verified donors and nearby blood banks across India.</p>
       </div>
 
       <Card className="mt-8 p-6">
-        <div className="grid md:grid-cols-[1fr_1fr_auto] gap-4 items-end">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           <div>
             <Label>Blood Group</Label>
-            <Select value={group} onValueChange={(v) => setGroup(v as BloodGroup)}>
-              <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
-              <SelectContent>{BLOOD_GROUPS.map((g) => <SelectItem key={g} value={g}>{g}</SelectItem>)}</SelectContent>
-            </Select>
+            <div className="mt-1">
+              <SearchableSelect value={group} onChange={(v) => setGroup(v as BloodGroup)} options={BLOOD_GROUPS as unknown as string[]} placeholder="Blood group" searchPlaceholder="Search group..." />
+            </div>
+          </div>
+          <div>
+            <Label>State / UT</Label>
+            <div className="mt-1">
+              <SearchableSelect value={state} onChange={(s) => { setState(s); const first = STATE_CITIES[s]?.[0]; if (first) setCity(first); }} options={STATES} placeholder="Select state" searchPlaceholder="Search state..." />
+            </div>
           </div>
           <div>
             <Label>City</Label>
-            <Select value={city} onValueChange={setCity}>
-              <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
-              <SelectContent>{CITIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
-            </Select>
+            <div className="mt-1">
+              <SearchableSelect value={city} onChange={setCity} options={cityOptions} placeholder="Select city" searchPlaceholder="Search city..." disabled={!cityOptions.length} />
+            </div>
           </div>
-          <Button size="lg" onClick={() => search.mutate()} disabled={search.isPending} className="bg-gradient-primary shadow-glow h-11">
+          <Button size="lg" onClick={() => search.mutate()} disabled={search.isPending || !city} className="bg-gradient-primary shadow-glow h-11">
             <Search className="mr-2 h-4 w-4" /> {search.isPending ? "Searching..." : "Search"}
           </Button>
         </div>

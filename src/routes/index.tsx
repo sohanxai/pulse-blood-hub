@@ -233,7 +233,7 @@ function Home() {
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Upcoming Donation Camps</h2>
             <p className="mt-3 text-muted-foreground text-lg max-w-2xl">Join a verified camp in your city — partnered with leading hospitals & blood banks.</p>
           </div>
-          <Button variant="outline" className="self-start md:self-end">View all camps <ArrowRight className="ml-2 h-4 w-4" /></Button>
+          <Link to="/camps" className="self-start md:self-end"><Button variant="outline">View all camps <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
@@ -256,7 +256,7 @@ function Home() {
                 <MapPin className="h-4 w-4 text-secondary" /> 24 cities • 86 partner centres
               </div>
               <p className="mt-4 text-sm leading-relaxed">National blood donation week with on-spot health screening, refreshments, and lifesaver certificates.</p>
-              <Button className="mt-5 w-full bg-gradient-primary shadow-glow">Register Now <ArrowRight className="ml-2 h-4 w-4" /></Button>
+              <Link to="/donate"><Button className="mt-5 w-full bg-gradient-primary shadow-glow">Register Now <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
             </div>
           </Card>
 
@@ -286,9 +286,9 @@ function Home() {
                         <div className="h-full bg-gradient-primary rounded-full" style={{ width: `${pct}%` }} />
                       </div>
                     </div>
-                    <Button size="sm" variant="outline" className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors">
+                    <Link to="/donate"><Button size="sm" variant="outline" className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors">
                       Register
-                    </Button>
+                    </Button></Link>
                   </div>
                 </div>
               </Card>
@@ -310,7 +310,7 @@ function Home() {
                 <p className="mt-2 opacity-90 max-w-xl">We provide medical staff, equipment, and logistics. Free for partners.</p>
               </div>
             </div>
-            <Button size="lg" variant="secondary" className="shrink-0">Partner with us <ArrowRight className="ml-2 h-4 w-4" /></Button>
+            <Link to="/hospital-register"><Button size="lg" variant="secondary" className="shrink-0">Partner with us <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
           </div>
         </Card>
       </section>

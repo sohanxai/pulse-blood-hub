@@ -9,12 +9,60 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HospitalRegisterRouteImport } from './routes/hospital-register'
 import { Route as FindBloodRouteImport } from './routes/find-blood'
+import { Route as DonateRouteImport } from './routes/donate'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CampsRouteImport } from './routes/camps'
+import { Route as BloodBankRegisterRouteImport } from './routes/blood-bank-register'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const HospitalRegisterRoute = HospitalRegisterRouteImport.update({
+  id: '/hospital-register',
+  path: '/hospital-register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FindBloodRoute = FindBloodRouteImport.update({
   id: '/find-blood',
   path: '/find-blood',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonateRoute = DonateRouteImport.update({
+  id: '/donate',
+  path: '/donate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampsRoute = CampsRouteImport.update({
+  id: '/camps',
+  path: '/camps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BloodBankRegisterRoute = BloodBankRegisterRouteImport.update({
+  id: '/blood-bank-register',
+  path: '/blood-bank-register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,37 +73,156 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/blood-bank-register': typeof BloodBankRegisterRoute
+  '/camps': typeof CampsRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRoute
+  '/donate': typeof DonateRoute
   '/find-blood': typeof FindBloodRoute
+  '/hospital-register': typeof HospitalRegisterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/blood-bank-register': typeof BloodBankRegisterRoute
+  '/camps': typeof CampsRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRoute
+  '/donate': typeof DonateRoute
   '/find-blood': typeof FindBloodRoute
+  '/hospital-register': typeof HospitalRegisterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/blood-bank-register': typeof BloodBankRegisterRoute
+  '/camps': typeof CampsRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRoute
+  '/donate': typeof DonateRoute
   '/find-blood': typeof FindBloodRoute
+  '/hospital-register': typeof HospitalRegisterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/find-blood'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/blood-bank-register'
+    | '/camps'
+    | '/contact'
+    | '/dashboard'
+    | '/donate'
+    | '/find-blood'
+    | '/hospital-register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/find-blood'
-  id: '__root__' | '/' | '/find-blood'
+  to:
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/blood-bank-register'
+    | '/camps'
+    | '/contact'
+    | '/dashboard'
+    | '/donate'
+    | '/find-blood'
+    | '/hospital-register'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/blood-bank-register'
+    | '/camps'
+    | '/contact'
+    | '/dashboard'
+    | '/donate'
+    | '/find-blood'
+    | '/hospital-register'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRoute
+  BloodBankRegisterRoute: typeof BloodBankRegisterRoute
+  CampsRoute: typeof CampsRoute
+  ContactRoute: typeof ContactRoute
+  DashboardRoute: typeof DashboardRoute
+  DonateRoute: typeof DonateRoute
   FindBloodRoute: typeof FindBloodRoute
+  HospitalRegisterRoute: typeof HospitalRegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/hospital-register': {
+      id: '/hospital-register'
+      path: '/hospital-register'
+      fullPath: '/hospital-register'
+      preLoaderRoute: typeof HospitalRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/find-blood': {
       id: '/find-blood'
       path: '/find-blood'
       fullPath: '/find-blood'
       preLoaderRoute: typeof FindBloodRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donate': {
+      id: '/donate'
+      path: '/donate'
+      fullPath: '/donate'
+      preLoaderRoute: typeof DonateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/camps': {
+      id: '/camps'
+      path: '/camps'
+      fullPath: '/camps'
+      preLoaderRoute: typeof CampsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blood-bank-register': {
+      id: '/blood-bank-register'
+      path: '/blood-bank-register'
+      fullPath: '/blood-bank-register'
+      preLoaderRoute: typeof BloodBankRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,7 +237,15 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AuthRoute: AuthRoute,
+  BloodBankRegisterRoute: BloodBankRegisterRoute,
+  CampsRoute: CampsRoute,
+  ContactRoute: ContactRoute,
+  DashboardRoute: DashboardRoute,
+  DonateRoute: DonateRoute,
   FindBloodRoute: FindBloodRoute,
+  HospitalRegisterRoute: HospitalRegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
