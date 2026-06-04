@@ -256,7 +256,7 @@ function Home() {
                 <MapPin className="h-4 w-4 text-secondary" /> 24 cities • 86 partner centres
               </div>
               <p className="mt-4 text-sm leading-relaxed">National blood donation week with on-spot health screening, refreshments, and lifesaver certificates.</p>
-              <Button className="mt-5 w-full bg-gradient-primary shadow-glow">Register Now <ArrowRight className="ml-2 h-4 w-4" /></Button>
+              <Link to="/donate"><Button className="mt-5 w-full bg-gradient-primary shadow-glow">Register Now <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
             </div>
           </Card>
 
