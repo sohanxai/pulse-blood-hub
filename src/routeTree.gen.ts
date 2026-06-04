@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HospitalRegisterRouteImport } from './routes/hospital-register'
 import { Route as FindBloodRouteImport } from './routes/find-blood'
 import { Route as DonateRouteImport } from './routes/donate'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -17,6 +18,11 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const HospitalRegisterRoute = HospitalRegisterRouteImport.update({
+  id: '/hospital-register',
+  path: '/hospital-register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FindBloodRoute = FindBloodRouteImport.update({
   id: '/find-blood',
   path: '/find-blood',
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/donate': typeof DonateRoute
   '/find-blood': typeof FindBloodRoute
+  '/hospital-register': typeof HospitalRegisterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/donate': typeof DonateRoute
   '/find-blood': typeof FindBloodRoute
+  '/hospital-register': typeof HospitalRegisterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/donate': typeof DonateRoute
   '/find-blood': typeof FindBloodRoute
+  '/hospital-register': typeof HospitalRegisterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/donate'
     | '/find-blood'
+    | '/hospital-register'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/donate'
     | '/find-blood'
+    | '/hospital-register'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/donate'
     | '/find-blood'
+    | '/hospital-register'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,10 +131,18 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   DonateRoute: typeof DonateRoute
   FindBloodRoute: typeof FindBloodRoute
+  HospitalRegisterRoute: typeof HospitalRegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/hospital-register': {
+      id: '/hospital-register'
+      path: '/hospital-register'
+      fullPath: '/hospital-register'
+      preLoaderRoute: typeof HospitalRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/find-blood': {
       id: '/find-blood'
       path: '/find-blood'
@@ -183,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   DonateRoute: DonateRoute,
   FindBloodRoute: FindBloodRoute,
+  HospitalRegisterRoute: HospitalRegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
