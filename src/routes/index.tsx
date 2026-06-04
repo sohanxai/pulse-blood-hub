@@ -233,7 +233,7 @@ function Home() {
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Upcoming Donation Camps</h2>
             <p className="mt-3 text-muted-foreground text-lg max-w-2xl">Join a verified camp in your city — partnered with leading hospitals & blood banks.</p>
           </div>
-          <Button variant="outline" className="self-start md:self-end">View all camps <ArrowRight className="ml-2 h-4 w-4" /></Button>
+          <Link to="/camps" className="self-start md:self-end"><Button variant="outline">View all camps <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
