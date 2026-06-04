@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as FindBloodRouteImport } from './routes/find-blood'
+import { Route as DonateRouteImport } from './routes/donate'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 
 const FindBloodRoute = FindBloodRouteImport.update({
   id: '/find-blood',
   path: '/find-blood',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonateRoute = DonateRouteImport.update({
+  id: '/donate',
+  path: '/donate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -32,30 +38,34 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/donate': typeof DonateRoute
   '/find-blood': typeof FindBloodRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/donate': typeof DonateRoute
   '/find-blood': typeof FindBloodRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/donate': typeof DonateRoute
   '/find-blood': typeof FindBloodRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/find-blood'
+  fullPaths: '/' | '/auth' | '/donate' | '/find-blood'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/find-blood'
-  id: '__root__' | '/' | '/auth' | '/find-blood'
+  to: '/' | '/auth' | '/donate' | '/find-blood'
+  id: '__root__' | '/' | '/auth' | '/donate' | '/find-blood'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  DonateRoute: typeof DonateRoute
   FindBloodRoute: typeof FindBloodRoute
 }
 
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/find-blood'
       fullPath: '/find-blood'
       preLoaderRoute: typeof FindBloodRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donate': {
+      id: '/donate'
+      path: '/donate'
+      fullPath: '/donate'
+      preLoaderRoute: typeof DonateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  DonateRoute: DonateRoute,
   FindBloodRoute: FindBloodRoute,
 }
 export const routeTree = rootRouteImport
