@@ -310,7 +310,7 @@ function Home() {
                 <p className="mt-2 opacity-90 max-w-xl">We provide medical staff, equipment, and logistics. Free for partners.</p>
               </div>
             </div>
-            <Button size="lg" variant="secondary" className="shrink-0">Partner with us <ArrowRight className="ml-2 h-4 w-4" /></Button>
+            <Link to="/hospital-register"><Button size="lg" variant="secondary" className="shrink-0">Partner with us <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
           </div>
         </Card>
       </section>
