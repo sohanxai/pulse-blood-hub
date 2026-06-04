@@ -286,9 +286,9 @@ function Home() {
                         <div className="h-full bg-gradient-primary rounded-full" style={{ width: `${pct}%` }} />
                       </div>
                     </div>
-                    <Button size="sm" variant="outline" className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors">
+                    <Link to="/donate"><Button size="sm" variant="outline" className="mt-3 w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors">
                       Register
-                    </Button>
+                    </Button></Link>
                   </div>
                 </div>
               </Card>
