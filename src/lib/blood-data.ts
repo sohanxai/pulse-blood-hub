@@ -90,6 +90,17 @@ export interface DemoDonor {
   isDemo: true;
 }
 
+export interface DemoBloodBank {
+  id: string;
+  name: string;
+  phone: string;
+  city: string;
+  area: string;
+  address: string;
+  inventory: Record<BloodGroup, number>;
+  isDemo: true;
+}
+
 const GENERIC_AREAS = ["Central","North","South","East","West","Sector 5","Civil Lines","Old Town"];
 
 export function generateDemoDonors(blood_group: BloodGroup, city: string, count: number): DemoDonor[] {
@@ -113,4 +124,19 @@ export function generateDemoDonors(blood_group: BloodGroup, city: string, count:
       isDemo: true,
     };
   });
+}
+
+export function generateDemoBloodBanks(city: string, count = 3): DemoBloodBank[] {
+  const rand = rng(city.length * 41 + (city.charCodeAt(0) || 3));
+  const names = ["LifeLine Blood Centre", "CityCare Blood Bank", "Red Shield Blood Centre", "Sanjeevani Blood Bank", "Hope Medical Blood Bank"];
+  return Array.from({ length: count }, (_, i) => ({
+    id: `demo-bank-${city}-${i}`,
+    name: `${city} ${names[i % names.length]}`,
+    phone: `+91 8${Math.floor(rand() * 900000000 + 100000000)}`,
+    city,
+    area: GENERIC_AREAS[Math.floor(rand() * GENERIC_AREAS.length)],
+    address: `${GENERIC_AREAS[Math.floor(rand() * GENERIC_AREAS.length)]} Medical Road, ${city}`,
+    inventory: Object.fromEntries(BLOOD_GROUPS.map((g) => [g, 2 + Math.floor(rand() * 16)])) as Record<BloodGroup, number>,
+    isDemo: true,
+  }));
 }
