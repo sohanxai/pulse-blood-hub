@@ -237,3 +237,73 @@ export const getMyRequests = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     return { requests: data ?? [] };
   });
+
+export const getMyHospital = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase.from("hospitals").select("*").eq("user_id", context.userId).maybeSingle();
+    if (error) throw new Error(error.message);
+    return { hospital: data };
+  });
+
+export const getMyBloodBank = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase.from("blood_banks").select("*").eq("user_id", context.userId).maybeSingle();
+    if (error) throw new Error(error.message);
+    return { bloodBank: data };
+  });
+
+const campRegistrationSchema = z.object({
+  camp_title: z.string().trim().min(2).max(160),
+  camp_city: z.string().trim().min(2).max(80),
+  full_name: z.string().trim().min(2).max(100),
+  phone: z.string().trim().min(7).max(20),
+  email: z.string().trim().email().max(255).optional().or(z.literal("")),
+  blood_group: z.enum(["A+","A-","B+","B-","AB+","AB-","O+","O-"]),
+});
+
+export const registerForCamp = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => campRegistrationSchema.parse(input))
+  .handler(async ({ data, context }) => {
+    const { data: row, error } = await context.supabase
+      .from("camp_registrations")
+      .insert({ ...data, email: data.email || null, user_id: context.userId })
+      .select("id")
+      .single();
+    if (error) throw new Error(error.message);
+    return { id: row.id };
+  });
+
+export const getMyCampRegistrations = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase
+      .from("camp_registrations")
+      .select("*")
+      .eq("user_id", context.userId)
+      .order("created_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return { registrations: data ?? [] };
+  });
+
+const contactSchema = z.object({
+  name: z.string().trim().min(2).max(100),
+  email: z.string().trim().email().max(255),
+  subject: z.string().trim().min(2).max(160),
+  message: z.string().trim().min(10).max(1000),
+});
+
+export const submitContactMessage = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => contactSchema.parse(input))
+  .handler(async ({ data, context }) => {
+    const { data: row, error } = await context.supabase
+      .from("contact_messages")
+      .insert({ ...data, user_id: context.userId })
+      .select("id")
+      .single();
+    if (error) throw new Error(error.message);
+    return { id: row.id };
+  });
