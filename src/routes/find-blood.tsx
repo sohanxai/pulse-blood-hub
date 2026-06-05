@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { BackButton } from "@/components/site/BackButton";
 import { BloodGroupBadge } from "@/components/site/BloodGroupBadge";
 import { SearchableSelect } from "@/components/site/SearchableSelect";
-import { BLOOD_GROUPS, STATES, STATE_CITIES, generateDemoDonors, type BloodGroup } from "@/lib/blood-data";
+import { BLOOD_GROUPS, STATES, STATE_CITIES, generateDemoBloodBanks, generateDemoDonors, type BloodGroup } from "@/lib/blood-data";
 import { searchDonors, listBloodBanks } from "@/lib/bloodconnect.functions";
 
 export const Route = createFileRoute("/find-blood")({
@@ -33,7 +33,8 @@ function FindBlood() {
       const real = (d.donors ?? []).map((x) => ({ ...x, isDemo: false as const }));
       const need = Math.max(0, 5 - real.length);
       const demo = generateDemoDonors(group, city, need);
-      return { donors: [...real, ...demo], banks: b.banks ?? [] };
+      const banks = b.banks?.length ? b.banks : generateDemoBloodBanks(city, 3);
+      return { donors: [...real, ...demo], banks };
     },
   });
 
@@ -101,12 +102,12 @@ function FindBlood() {
           <div>
             <h2 className="font-semibold text-xl mb-4 flex items-center gap-2"><Building2 className="h-5 w-5 text-secondary" /> Blood Banks</h2>
             <div className="space-y-3">
-              {results.banks.length === 0 && <Card className="p-4 text-sm text-muted-foreground">No partner blood banks in {city} yet.</Card>}
               {results.banks.map((b: any) => {
                 const units = (b.inventory ?? {})[group] ?? 0;
                 return (
                   <Card key={b.id} className="p-4">
                     <p className="font-semibold">{b.name}</p>
+                    {b.isDemo && <Badge variant="outline" className="mt-2 text-xs">Demo Blood Bank</Badge>}
                     <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1"><MapPin className="h-3 w-3" /> {b.area}, {b.city}</p>
                     <div className="mt-3 flex items-center justify-between">
                       <span className="text-sm"><strong className="text-primary">{units}</strong> units of {group}</span>
