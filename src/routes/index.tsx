@@ -398,6 +398,11 @@ function Home() {
                 </span>
                 <p className="font-display font-semibold text-sm">{p.name}</p>
                 <p className="text-xs text-muted-foreground mt-1">{p.type}</p>
+                <div className="mt-4 grid gap-2">
+                  <Link to="/hospitals"><Button size="sm" variant="outline" className="w-full">View Details</Button></Link>
+                  <Link to={p.type === "Hospital Network" ? "/hospital-register" : "/blood-bank-register"}><Button size="sm" className="w-full bg-gradient-primary">Register</Button></Link>
+                  <Link to="/contact"><Button size="sm" variant="ghost" className="w-full">Contact</Button></Link>
+                </div>
               </Card>
             ))}
           </div>
