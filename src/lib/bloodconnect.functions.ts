@@ -296,12 +296,11 @@ const contactSchema = z.object({
 });
 
 export const submitContactMessage = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((input) => contactSchema.parse(input))
-  .handler(async ({ data, context }) => {
-    const { data: row, error } = await context.supabase
+  .handler(async ({ data }) => {
+    const { data: row, error } = await anonClient
       .from("contact_messages")
-      .insert({ ...data, user_id: context.userId })
+      .insert({ ...data, user_id: null })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
