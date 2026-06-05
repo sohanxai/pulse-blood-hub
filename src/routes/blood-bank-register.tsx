@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { BackButton } from "@/components/site/BackButton";
 import { SearchableSelect } from "@/components/site/SearchableSelect";
 import { STATES, STATE_CITIES } from "@/lib/blood-data";
+import { supabase } from "@/integrations/supabase/client";
+import { registerBloodBank } from "@/lib/bloodconnect.functions";
 
 export const Route = createFileRoute("/blood-bank-register")({
   head: () => ({ meta: [{ title: "Blood Bank Registration — BloodConnect" }] }),
@@ -24,20 +26,37 @@ function BankRegister() {
   const [loading, setLoading] = useState(false);
   const cities = useMemo(() => STATE_CITIES[state] ?? [], [state]);
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true);
+    const { data: auth } = await supabase.auth.getSession();
+    if (!auth.session) {
+      toast.error("Please create an account before registering a blood bank.");
+      navigate({ to: "/auth", search: { mode: "signup" } });
+      return;
+    }
     const f = new FormData(e.currentTarget);
-    const record = Object.fromEntries(f.entries());
-    setTimeout(() => {
-      try {
-        const list = JSON.parse(localStorage.getItem("bc_blood_banks") || "[]");
-        list.unshift({ ...record, state, city, type: "blood_bank", created_at: new Date().toISOString() });
-        localStorage.setItem("bc_blood_banks", JSON.stringify(list));
-      } catch {}
-      setLoading(false); setDone(true);
+    setLoading(true);
+    try {
+      await registerBloodBank({ data: {
+        name: String(f.get("name")),
+        license: String(f.get("license")),
+        contact_person: String(f.get("contact_person")),
+        email: String(f.get("email")),
+        phone: String(f.get("phone")),
+        state,
+        city,
+        area: String(f.get("area")),
+        address: String(f.get("address")),
+        capacity: Number(f.get("capacity") || 0) || undefined,
+      }});
       toast.success("Blood bank registered successfully!");
-    }, 600);
+      setDone(true);
+      setTimeout(() => navigate({ to: "/blood-bank-dashboard" }), 900);
+    } catch (err: any) {
+      toast.error(err.message ?? "Blood bank registration failed");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (done) {
@@ -47,7 +66,7 @@ function BankRegister() {
         <h1 className="mt-4 text-3xl font-bold">Blood Bank Registered</h1>
         <p className="mt-2 text-muted-foreground">Your blood bank is in our verification queue. Listings go live within 24 hours.</p>
         <div className="mt-6 flex justify-center gap-3">
-          <Link to="/dashboard"><Button className="bg-gradient-primary shadow-glow">Go to Dashboard</Button></Link>
+          <Link to="/blood-bank-dashboard"><Button className="bg-gradient-primary shadow-glow">Go to Blood Bank Dashboard</Button></Link>
           <Button variant="outline" onClick={() => navigate({ to: "/" })}>Home</Button>
         </div>
       </div>
