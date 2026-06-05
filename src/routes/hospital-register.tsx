@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { BackButton } from "@/components/site/BackButton";
 import { SearchableSelect } from "@/components/site/SearchableSelect";
 import { STATES, STATE_CITIES } from "@/lib/blood-data";
+import { supabase } from "@/integrations/supabase/client";
+import { registerHospital } from "@/lib/bloodconnect.functions";
 
 export const Route = createFileRoute("/hospital-register")({
   head: () => ({ meta: [{ title: "Hospital Registration — BloodConnect" }] }),
@@ -24,20 +26,37 @@ function HospitalRegister() {
   const [loading, setLoading] = useState(false);
   const cities = useMemo(() => STATE_CITIES[state] ?? [], [state]);
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true);
+    const { data: auth } = await supabase.auth.getSession();
+    if (!auth.session) {
+      toast.error("Please create an account before registering a hospital.");
+      navigate({ to: "/auth", search: { mode: "signup" } });
+      return;
+    }
     const f = new FormData(e.currentTarget);
-    const record = Object.fromEntries(f.entries());
-    setTimeout(() => {
-      try {
-        const list = JSON.parse(localStorage.getItem("bc_hospitals") || "[]");
-        list.unshift({ ...record, state, city, type: "hospital", created_at: new Date().toISOString() });
-        localStorage.setItem("bc_hospitals", JSON.stringify(list));
-      } catch {}
-      setLoading(false); setDone(true);
+    setLoading(true);
+    try {
+      await registerHospital({ data: {
+        name: String(f.get("name")),
+        registration_number: String(f.get("reg_no")),
+        contact_person: String(f.get("contact_person")),
+        email: String(f.get("email")),
+        phone: String(f.get("phone")),
+        state,
+        city,
+        area: String(f.get("area") || ""),
+        address: String(f.get("address")),
+        beds: Number(f.get("beds") || 0) || undefined,
+      }});
       toast.success("Hospital registered successfully!");
-    }, 600);
+      setDone(true);
+      setTimeout(() => navigate({ to: "/hospital-dashboard" }), 900);
+    } catch (err: any) {
+      toast.error(err.message ?? "Hospital registration failed");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (done) {
@@ -47,7 +66,7 @@ function HospitalRegister() {
         <h1 className="mt-4 text-3xl font-bold">Hospital Registration Submitted</h1>
         <p className="mt-2 text-muted-foreground">Our team will verify your details and activate your hospital dashboard within 24 hours.</p>
         <div className="mt-6 flex justify-center gap-3">
-          <Link to="/dashboard"><Button className="bg-gradient-primary shadow-glow">Go to Dashboard</Button></Link>
+          <Link to="/hospital-dashboard"><Button className="bg-gradient-primary shadow-glow">Go to Hospital Dashboard</Button></Link>
           <Button variant="outline" onClick={() => navigate({ to: "/" })}>Home</Button>
         </div>
       </div>
@@ -74,6 +93,7 @@ function HospitalRegister() {
           <div><Label>Phone *</Label><Input name="phone" required className="mt-1" /></div>
           <div><Label>State *</Label><div className="mt-1"><SearchableSelect value={state} onChange={(s) => { setState(s); const f = STATE_CITIES[s]?.[0]; if (f) setCity(f); }} options={STATES} /></div></div>
           <div><Label>City *</Label><div className="mt-1"><SearchableSelect value={city} onChange={setCity} options={cities} /></div></div>
+          <div><Label>Area / Locality</Label><Input name="area" className="mt-1" /></div>
           <div className="md:col-span-2"><Label>Address *</Label><Textarea name="address" required className="mt-1" /></div>
           <div><Label>Password *</Label><Input name="password" type="password" required minLength={6} className="mt-1" /></div>
           <div><Label>Beds / Capacity</Label><Input name="beds" type="number" className="mt-1" /></div>
