@@ -1,52 +1,54 @@
-// Shared blood / city / demo donor data.
+import { City, State } from "country-state-city";
+
 export const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
 export type BloodGroup = (typeof BLOOD_GROUPS)[number];
 
-// Full India: States, UTs and major cities.
-export const STATE_CITIES: Record<string, string[]> = {
-  "Andhra Pradesh": ["Visakhapatnam","Vijayawada","Guntur","Nellore","Kurnool","Tirupati","Rajahmundry","Kakinada"],
-  "Arunachal Pradesh": ["Itanagar","Naharlagun","Pasighat","Tawang"],
-  "Assam": ["Guwahati","Silchar","Dibrugarh","Jorhat","Nagaon","Tezpur"],
-  "Bihar": ["Patna","Gaya","Bhagalpur","Muzaffarpur","Darbhanga","Purnia","Ara"],
-  "Chhattisgarh": ["Raipur","Bhilai","Bilaspur","Korba","Durg","Rajnandgaon"],
-  "Goa": ["Panaji","Margao","Vasco da Gama","Mapusa","Ponda"],
-  "Gujarat": ["Ahmedabad","Surat","Vadodara","Rajkot","Bhavnagar","Jamnagar","Gandhinagar","Junagadh"],
-  "Haryana": ["Faridabad","Gurugram","Panipat","Ambala","Karnal","Hisar","Rohtak","Sonipat"],
-  "Himachal Pradesh": ["Shimla","Dharamshala","Solan","Mandi","Kullu","Manali"],
-  "Jharkhand": ["Ranchi","Jamshedpur","Dhanbad","Bokaro","Hazaribagh","Deoghar"],
-  "Karnataka": ["Bengaluru","Mysuru","Mangaluru","Hubballi","Belagavi","Davangere","Ballari","Tumakuru","Shivamogga"],
-  "Kerala": ["Thiruvananthapuram","Kochi","Kozhikode","Thrissur","Kollam","Kannur","Alappuzha","Palakkad"],
-  "Madhya Pradesh": ["Indore","Bhopal","Jabalpur","Gwalior","Ujjain","Sagar","Dewas","Satna","Rewa"],
-  "Maharashtra": ["Mumbai","Pune","Nagpur","Nashik","Aurangabad","Thane","Solapur","Kolhapur","Amravati","Navi Mumbai"],
-  "Manipur": ["Imphal","Thoubal","Bishnupur","Churachandpur"],
-  "Meghalaya": ["Shillong","Tura","Jowai"],
-  "Mizoram": ["Aizawl","Lunglei","Champhai"],
-  "Nagaland": ["Kohima","Dimapur","Mokokchung","Tuensang"],
-  "Odisha": ["Bhubaneswar","Cuttack","Rourkela","Berhampur","Sambalpur","Puri"],
-  "Punjab": ["Ludhiana","Amritsar","Jalandhar","Patiala","Bathinda","Mohali","Pathankot"],
-  "Rajasthan": ["Jaipur","Jodhpur","Udaipur","Kota","Bikaner","Ajmer","Alwar","Bhilwara"],
-  "Sikkim": ["Gangtok","Namchi","Gyalshing"],
-  "Tamil Nadu": ["Chennai","Coimbatore","Madurai","Tiruchirappalli","Salem","Tirunelveli","Erode","Vellore","Thoothukudi"],
-  "Telangana": ["Hyderabad","Warangal","Nizamabad","Karimnagar","Khammam","Secunderabad"],
-  "Tripura": ["Agartala","Udaipur","Dharmanagar"],
-  "Uttar Pradesh": ["Lucknow","Kanpur","Ghaziabad","Agra","Varanasi","Meerut","Prayagraj","Noida","Bareilly","Aligarh","Moradabad","Gorakhpur"],
-  "Uttarakhand": ["Dehradun","Haridwar","Roorkee","Haldwani","Rishikesh","Nainital"],
-  "West Bengal": ["Kolkata","Howrah","Durgapur","Asansol","Siliguri","Bardhaman","Malda"],
-  // Union Territories
-  "Andaman and Nicobar Islands": ["Port Blair"],
-  "Chandigarh": ["Chandigarh"],
-  "Dadra and Nagar Haveli and Daman and Diu": ["Daman","Silvassa","Diu"],
-  "Delhi": ["New Delhi","Dwarka","Rohini","Saket","Karol Bagh","Connaught Place","Janakpuri","Pitampura"],
-  "Jammu and Kashmir": ["Srinagar","Jammu","Anantnag","Baramulla"],
-  "Ladakh": ["Leh","Kargil"],
-  "Lakshadweep": ["Kavaratti"],
-  "Puducherry": ["Puducherry","Karaikal","Yanam"],
+const PREFERRED_CITIES: Record<string, string[]> = {
+  "Maharashtra": ["Mumbai", "Wardha", "Pune", "Nagpur", "Nashik", "Aurangabad", "Kolhapur", "Amravati", "Akola", "Thane", "Navi Mumbai", "Solapur"],
+  "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Gandhinagar", "Junagadh"],
+  "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubli", "Hubballi", "Belagavi", "Davangere", "Ballari"],
+  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirappalli", "Tirunelveli", "Erode", "Vellore"],
+  "Delhi": ["New Delhi", "Delhi", "Dwarka", "Rohini", "Saket", "Karol Bagh", "Connaught Place", "Janakpuri"],
+  "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Khammam", "Secunderabad"],
+  "Uttar Pradesh": ["Lucknow", "Kanpur", "Ghaziabad", "Agra", "Varanasi", "Meerut", "Prayagraj", "Noida", "Bareilly", "Gorakhpur"],
+  "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri", "Bardhaman", "Malda"],
+  "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Bikaner", "Ajmer", "Alwar", "Bhilwara"],
+  "Madhya Pradesh": ["Indore", "Bhopal", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Rewa"],
+  "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Darbhanga", "Purnia"],
+  "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Kurnool", "Tirupati", "Rajahmundry"],
+  "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam", "Kannur", "Alappuzha"],
+  "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali"],
+  "Haryana": ["Faridabad", "Gurugram", "Panipat", "Ambala", "Karnal", "Hisar", "Rohtak"],
 };
 
-export const STATES = Object.keys(STATE_CITIES).sort();
-export const ALL_CITIES: string[] = Array.from(
-  new Set(Object.values(STATE_CITIES).flat()),
-).sort();
+function uniqueSorted(preferred: string[], discovered: string[]) {
+  const seen = new Set<string>();
+  const normalized = [...preferred, ...discovered.sort((a, b) => a.localeCompare(b))]
+    .map((name) => name.trim())
+    .filter(Boolean)
+    .filter((name) => {
+      const key = name.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  return normalized;
+}
+
+const INDIA_STATES = State.getStatesOfCountry("IN");
+
+export const STATE_CITIES: Record<string, string[]> = Object.fromEntries(
+  INDIA_STATES.map((state) => [
+    state.name,
+    uniqueSorted(
+      PREFERRED_CITIES[state.name] ?? [],
+      City.getCitiesOfState("IN", state.isoCode).map((city) => city.name),
+    ),
+  ]),
+);
+
+export const STATES = INDIA_STATES.map((state) => state.name).sort((a, b) => a.localeCompare(b));
+export const ALL_CITIES: string[] = Array.from(new Set(Object.values(STATE_CITIES).flat())).sort((a, b) => a.localeCompare(b));
 
 // Backwards-compat export
 export const CITIES = ALL_CITIES;
@@ -88,6 +90,17 @@ export interface DemoDonor {
   isDemo: true;
 }
 
+export interface DemoBloodBank {
+  id: string;
+  name: string;
+  phone: string;
+  city: string;
+  area: string;
+  address: string;
+  inventory: Record<BloodGroup, number>;
+  isDemo: true;
+}
+
 const GENERIC_AREAS = ["Central","North","South","East","West","Sector 5","Civil Lines","Old Town"];
 
 export function generateDemoDonors(blood_group: BloodGroup, city: string, count: number): DemoDonor[] {
@@ -111,4 +124,19 @@ export function generateDemoDonors(blood_group: BloodGroup, city: string, count:
       isDemo: true,
     };
   });
+}
+
+export function generateDemoBloodBanks(city: string, count = 3): DemoBloodBank[] {
+  const rand = rng(city.length * 41 + (city.charCodeAt(0) || 3));
+  const names = ["LifeLine Blood Centre", "CityCare Blood Bank", "Red Shield Blood Centre", "Sanjeevani Blood Bank", "Hope Medical Blood Bank"];
+  return Array.from({ length: count }, (_, i) => ({
+    id: `demo-bank-${city}-${i}`,
+    name: `${city} ${names[i % names.length]}`,
+    phone: `+91 8${Math.floor(rand() * 900000000 + 100000000)}`,
+    city,
+    area: GENERIC_AREAS[Math.floor(rand() * GENERIC_AREAS.length)],
+    address: `${GENERIC_AREAS[Math.floor(rand() * GENERIC_AREAS.length)]} Medical Road, ${city}`,
+    inventory: Object.fromEntries(BLOOD_GROUPS.map((g) => [g, 2 + Math.floor(rand() * 16)])) as Record<BloodGroup, number>,
+    isDemo: true,
+  }));
 }
