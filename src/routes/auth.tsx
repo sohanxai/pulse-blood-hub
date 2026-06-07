@@ -30,11 +30,13 @@ function AuthPage() {
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault(); setLoading(true);
     const f = new FormData(e.currentTarget);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: String(f.get("email")), password: String(f.get("password")),
+    const email = String(f.get("email") ?? "").trim().toLowerCase();
+    const password = String(f.get("password") ?? "");
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email, password,
     });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error || !data.session) return toast.error("Invalid credentials. Please check your email and password.");
     toast.success("Welcome back!");
     navigate({ to: "/dashboard" });
   }
@@ -42,26 +44,44 @@ function AuthPage() {
   async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault(); setLoading(true);
     const f = new FormData(e.currentTarget);
-    const email = String(f.get("email"));
-    const password = String(f.get("password"));
+    const fullName = String(f.get("full_name") ?? "").trim();
+    const phone = String(f.get("phone") ?? "").trim();
+    const email = String(f.get("email") ?? "").trim().toLowerCase();
+    const password = String(f.get("password") ?? "");
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/dashboard`,
-        data: { full_name: String(f.get("full_name")), phone: String(f.get("phone")) },
+        data: { full_name: fullName, phone },
       },
     });
-    if (error) { setLoading(false); return toast.error(error.message); }
-    // Auto-confirm is enabled; sign in immediately to bypass any session edge cases.
+    if (error) {
+      const existingAccount = /already|registered|exists/i.test(error.message);
+      if (existingAccount) {
+        const { data: signInData, error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+        setLoading(false);
+        if (signInErr || !signInData.session) return toast.error("An account already exists for this email, but the password does not match.");
+        toast.success("Welcome back!");
+        navigate({ to: "/dashboard" });
+        return;
+      }
+      setLoading(false);
+      return toast.error(error.message);
+    }
+    let userId = data.user?.id;
     if (!data.session) {
-      const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+      const { data: signInData, error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
       if (signInErr) {
         setLoading(false);
-        toast.success("Account created! Please sign in.");
+        toast.error("Account created, but login is waiting for email confirmation. Please sign in after confirming your email.");
         setTab("login");
         return;
       }
+      userId = signInData.user?.id;
+    }
+    if (userId) {
+      await supabase.from("profiles").upsert({ id: userId, full_name: fullName, phone });
     }
     setLoading(false);
     toast.success("Welcome to BloodConnect!");
