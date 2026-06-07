@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
+import { getMyBloodBank, getMyHospital } from "@/lib/bloodconnect.functions";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>) => ({ mode: (s.mode as string) === "signup" ? "signup" : "login" }),
@@ -38,7 +39,7 @@ function AuthPage() {
     setLoading(false);
     if (error || !data.session) return toast.error("Invalid credentials. Please check your email and password.");
     toast.success("Welcome back!");
-    navigate({ to: "/dashboard" });
+    await navigateToBestDashboard();
   }
 
   async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
@@ -63,7 +64,7 @@ function AuthPage() {
         setLoading(false);
         if (signInErr || !signInData.session) return toast.error("An account already exists for this email, but the password does not match.");
         toast.success("Welcome back!");
-        navigate({ to: "/dashboard" });
+        await navigateToBestDashboard();
         return;
       }
       setLoading(false);
@@ -87,6 +88,17 @@ function AuthPage() {
     setLoading(false);
     toast.success("Welcome to BloodConnect!");
     navigate({ to: "/dashboard" });
+  }
+
+  async function navigateToBestDashboard() {
+    try {
+      const [hospital, bank] = await Promise.all([getMyHospital(), getMyBloodBank()]);
+      if (bank.bloodBank) return navigate({ to: "/blood-bank-dashboard" });
+      if (hospital.hospital) return navigate({ to: "/hospital-dashboard" });
+    } catch {
+      // The authenticated token is still settling; the general dashboard remains safe.
+    }
+    return navigate({ to: "/dashboard" });
   }
 
   return (
