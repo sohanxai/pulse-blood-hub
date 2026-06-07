@@ -18,6 +18,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CampsRouteImport } from './routes/camps'
 import { Route as BloodBankRegisterRouteImport } from './routes/blood-bank-register'
+import { Route as BloodBankDashboardRouteImport } from './routes/blood-bank-dashboard'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -67,6 +68,11 @@ const BloodBankRegisterRoute = BloodBankRegisterRouteImport.update({
   path: '/blood-bank-register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BloodBankDashboardRoute = BloodBankDashboardRouteImport.update({
+  id: '/blood-bank-dashboard',
+  path: '/blood-bank-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/blood-bank-dashboard': typeof BloodBankDashboardRoute
   '/blood-bank-register': typeof BloodBankRegisterRoute
   '/camps': typeof CampsRoute
   '/contact': typeof ContactRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/blood-bank-dashboard': typeof BloodBankDashboardRoute
   '/blood-bank-register': typeof BloodBankRegisterRoute
   '/camps': typeof CampsRoute
   '/contact': typeof ContactRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/blood-bank-dashboard': typeof BloodBankDashboardRoute
   '/blood-bank-register': typeof BloodBankRegisterRoute
   '/camps': typeof CampsRoute
   '/contact': typeof ContactRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/blood-bank-dashboard'
     | '/blood-bank-register'
     | '/camps'
     | '/contact'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/blood-bank-dashboard'
     | '/blood-bank-register'
     | '/camps'
     | '/contact'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/blood-bank-dashboard'
     | '/blood-bank-register'
     | '/camps'
     | '/contact'
@@ -175,6 +187,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
+  BloodBankDashboardRoute: typeof BloodBankDashboardRoute
   BloodBankRegisterRoute: typeof BloodBankRegisterRoute
   CampsRoute: typeof CampsRoute
   ContactRoute: typeof ContactRoute
@@ -251,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BloodBankRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blood-bank-dashboard': {
+      id: '/blood-bank-dashboard'
+      path: '/blood-bank-dashboard'
+      fullPath: '/blood-bank-dashboard'
+      preLoaderRoute: typeof BloodBankDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -279,6 +299,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
+  BloodBankDashboardRoute: BloodBankDashboardRoute,
   BloodBankRegisterRoute: BloodBankRegisterRoute,
   CampsRoute: CampsRoute,
   ContactRoute: ContactRoute,
