@@ -69,12 +69,13 @@ function AuthPage() {
       setLoading(false);
       return toast.error(error.message);
     }
+    const duplicateWithoutNewIdentity = data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0;
     let userId = data.user?.id;
     if (!data.session) {
       const { data: signInData, error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
       if (signInErr) {
         setLoading(false);
-        toast.error("Account created, but login is waiting for email confirmation. Please sign in after confirming your email.");
+        toast.error(duplicateWithoutNewIdentity ? "An account already exists for this email, but the password does not match." : "Account created, but login is waiting for email confirmation. Please sign in after confirming your email.");
         setTab("login");
         return;
       }
