@@ -19,8 +19,8 @@ function HospitalDashboard() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) { navigate({ to: "/auth" }); return; }
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user) { navigate({ to: "/auth" }); return; }
       try {
         const result = await getMyHospital();
         setHospital(result.hospital);

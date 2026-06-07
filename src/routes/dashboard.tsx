@@ -24,9 +24,9 @@ function Dashboard() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) { navigate({ to: "/auth" }); return; }
-      setUser(data.session.user);
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user) { navigate({ to: "/auth" }); return; }
+      setUser(data.user);
       try {
         const [d, r] = await Promise.all([getMyDonor(), getMyRequests()]);
         setDonor(d.donor); setRequests(r.requests);
