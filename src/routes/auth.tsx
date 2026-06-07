@@ -42,18 +42,30 @@ function AuthPage() {
   async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault(); setLoading(true);
     const f = new FormData(e.currentTarget);
-    const { error } = await supabase.auth.signUp({
-      email: String(f.get("email")),
-      password: String(f.get("password")),
+    const email = String(f.get("email"));
+    const password = String(f.get("password"));
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
       options: {
         emailRedirectTo: `${window.location.origin}/dashboard`,
         data: { full_name: String(f.get("full_name")), phone: String(f.get("phone")) },
       },
     });
+    if (error) { setLoading(false); return toast.error(error.message); }
+    // Auto-confirm is enabled; sign in immediately to bypass any session edge cases.
+    if (!data.session) {
+      const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInErr) {
+        setLoading(false);
+        toast.success("Account created! Please sign in.");
+        setTab("login");
+        return;
+      }
+    }
     setLoading(false);
-    if (error) return toast.error(error.message);
-    toast.success("Account created! You can now sign in.");
-    setTab("login");
+    toast.success("Welcome to BloodConnect!");
+    navigate({ to: "/dashboard" });
   }
 
   return (
