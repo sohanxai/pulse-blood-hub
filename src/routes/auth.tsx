@@ -41,14 +41,15 @@ function AuthPage() {
 
   async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault(); setLoading(true);
-    const email = String(f_get(e, "email"));
-    const password = String(f_get(e, "password"));
+    const f = new FormData(e.currentTarget);
+    const email = String(f.get("email"));
+    const password = String(f.get("password"));
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/dashboard`,
-        data: { full_name: String(f_get(e, "full_name")), phone: String(f_get(e, "phone")) },
+        data: { full_name: String(f.get("full_name")), phone: String(f.get("phone")) },
       },
     });
     if (error) { setLoading(false); return toast.error(error.message); }
