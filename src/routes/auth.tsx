@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
+import { makeLegacyAccountLoginReady } from "@/lib/auth.functions";
 import { getMyBloodBank, getMyHospital } from "@/lib/bloodconnect.functions";
 
 export const Route = createFileRoute("/auth")({
@@ -33,11 +34,15 @@ function AuthPage() {
     const f = new FormData(e.currentTarget);
     const email = String(f.get("email") ?? "").trim().toLowerCase();
     const password = String(f.get("password") ?? "");
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email, password,
-    });
+    let { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error && /confirm|verified|verification/i.test(error.message)) {
+      await makeLegacyAccountLoginReady({ data: { email, password } });
+      ({ data, error } = await supabase.auth.signInWithPassword({ email, password }));
+    }
     setLoading(false);
-    if (error || !data.session) return toast.error("Invalid credentials. Please check your email and password.");
+    if (error || !data.session) {
+      return toast.error(error?.message || "Invalid credentials. Please check your email and password.");
+    }
     toast.success("Welcome back!");
     await navigateToBestDashboard();
   }
