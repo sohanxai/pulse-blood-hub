@@ -1,13 +1,37 @@
 import { createServerFn } from "@tanstack/react-start";
+import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
-const emailSchema = z.object({
+const loginReadinessSchema = z.object({
   email: z.string().trim().toLowerCase().email().max(255),
+  password: z.string().min(6).max(128),
 });
 
 export const makeLegacyAccountLoginReady = createServerFn({ method: "POST" })
-  .inputValidator((input) => emailSchema.parse(input))
+  .inputValidator((input) => loginReadinessSchema.parse(input))
   .handler(async ({ data }) => {
+    const url = process.env.SUPABASE_URL;
+    const publishableKey = process.env.SUPABASE_PUBLISHABLE_KEY;
+    if (!url || !publishableKey) return { checked: false };
+
+    const authClient = createClient(url, publishableKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+
+    const firstAttempt = await authClient.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
+
+    if (!firstAttempt.error) {
+      await authClient.auth.signOut();
+      return { checked: true };
+    }
+
+    if (!/confirm|verified|verification/i.test(firstAttempt.error.message)) {
+      return { checked: true };
+    }
+
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const targetEmail = data.email.trim().toLowerCase();
     let page = 1;
