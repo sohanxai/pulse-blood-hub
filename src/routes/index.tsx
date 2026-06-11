@@ -417,9 +417,9 @@ function Home() {
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { n: "Priya M.", r: "Patient's daughter", t: "BloodConnect found 3 O- donors within 8 minutes during my mother's surgery. Life-saving." },
-            { n: "Dr. Rajesh K.", r: "Hospital Director", t: "We've reduced our emergency blood-sourcing time by 70% since partnering with BloodConnect." },
-            { n: "Arjun S.", r: "Donor • 6× Lifesaver", t: "I've donated 6 times through the platform. The reminders and reliability score keep me motivated." },
+            { n: "Rutuja A.", r: "Patient's daughter", t: "BloodConnect found 3 O- donors within 8 minutes during my mother's surgery. Life-saving." },
+            { n: "Sohan Akare", r: "Website Admin", t: "We've reduced our emergency blood-sourcing time by 70% since partnering with BloodConnect." },
+            { n: "Dr. Pawan Talwekar", r: "Donor • 6× Lifesaver", t: "I've donated 6 times through the platform. The reminders and reliability score keep me motivated." },
           ].map((tm) => (
             <Card key={tm.n} className="p-7 rounded-2xl hover:shadow-elegant hover:-translate-y-1 transition-all relative">
               <div className="flex gap-0.5 text-warning mb-3">
