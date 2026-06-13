@@ -10,6 +10,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { FloatingSignup } from "@/components/site/FloatingSignup";
 import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
@@ -90,6 +91,7 @@ function RootComponent() {
         <main className="flex-1"><Outlet /></main>
         <Footer />
       </div>
+      <FloatingSignup />
       <Toaster richColors position="top-right" />
     </QueryClientProvider>
   );
