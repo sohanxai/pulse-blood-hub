@@ -12,22 +12,28 @@ import { makeLegacyAccountLoginReady } from "@/lib/auth.functions";
 import { getMyBloodBank, getMyHospital } from "@/lib/bloodconnect.functions";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({ mode: (s.mode as string) === "signup" ? "signup" : "login" }),
+  validateSearch: (s: Record<string, unknown>) => ({
+    mode: (s.mode as string) === "signup" ? "signup" : "login",
+    next: typeof s.next === "string" && s.next.startsWith("/") ? s.next : "",
+  }),
   head: () => ({ meta: [{ title: "Login / Register — BloodConnect" }] }),
   component: AuthPage,
 });
 
 function AuthPage() {
   const navigate = useNavigate();
-  const { mode } = Route.useSearch();
+  const { mode, next } = Route.useSearch();
   const [tab, setTab] = useState<"login" | "signup">(mode);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard" });
+      if (data.session) {
+        if (next) window.location.href = next;
+        else navigate({ to: "/dashboard" });
+      }
     });
-  }, [navigate]);
+  }, [navigate, next]);
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault(); setLoading(true);
