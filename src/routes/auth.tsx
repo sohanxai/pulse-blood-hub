@@ -98,10 +98,12 @@ function AuthPage() {
     }
     setLoading(false);
     toast.success("Welcome to BloodConnect!");
-    navigate({ to: "/dashboard" });
+    if (next) window.location.href = next;
+    else navigate({ to: "/dashboard" });
   }
 
   async function navigateToBestDashboard() {
+    if (next) { window.location.href = next; return; }
     try {
       const [hospital, bank] = await Promise.all([getMyHospital(), getMyBloodBank()]);
       if (bank.bloodBank) return navigate({ to: "/blood-bank-dashboard" });
