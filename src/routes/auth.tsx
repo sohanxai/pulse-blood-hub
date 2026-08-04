@@ -11,10 +11,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { makeLegacyAccountLoginReady } from "@/lib/auth.functions";
 import { getMyBloodBank, getMyHospital } from "@/lib/bloodconnect.functions";
 
+type AuthSearch = { mode?: "login" | "signup"; next?: string };
+
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({
-    mode: (s.mode as string) === "signup" ? "signup" : "login",
-    next: typeof s.next === "string" && s.next.startsWith("/") ? s.next : "",
+  validateSearch: (s: Record<string, unknown>): AuthSearch => ({
+    mode: s.mode === "signup" ? "signup" : "login",
+    next: typeof s.next === "string" && s.next.startsWith("/") ? s.next : undefined,
   }),
   head: () => ({ meta: [{ title: "Login / Register — BloodConnect" }] }),
   component: AuthPage,
@@ -23,7 +25,7 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const navigate = useNavigate();
   const { mode, next } = Route.useSearch();
-  const [tab, setTab] = useState<"login" | "signup">(mode);
+  const [tab, setTab] = useState<"login" | "signup">(mode ?? "login");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
